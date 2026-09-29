@@ -1,4 +1,7 @@
 import asyncio
+import os
+from dotenv import load_dotenv
+
 from pathlib import Path 
 from yt_dlp import YoutubeDL
 
@@ -8,9 +11,9 @@ from aiogram.filters import CommandStart , Command , CommandObject
 
 import requests
 
+load_dotenv()
 
-
-BOT_TOKEN = '8523089912:AAHqv_mgp26yRO2-Fa_74bQyRH0Eyf6jxMs'
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
@@ -127,7 +130,7 @@ async def audio_handler(message: Message , command: CommandObject):
 		await msg.delete()
 
 	except Exception as e:
-		await message.answer('⛔️Не удалось получить информацию по ссылке\n\n\nВозможные причины:\n▫️закрытый (приватный) аккаунт\n▫️установлены возрастные ограничения\n▫️ошибка в получении данных\n\n\n<tg-emoji emoji-id="5240443340498944908">✨</tg-emoji>Попробуйте отправить другую ссылку', parse_mode="HTML") #если пошло по пизде
+		await message.answer('⛔️Не удалось получить информацию по ссылке\n\n\nВозможные причины:\n▫️закрытый (приватный) аккаунт\n▫️возрастные ограничения\n▫️ошибка в получении данных\n\n\n<tg-emoji emoji-id="5240443340498944908">✨</tg-emoji>Попробуйте отправить другую ссылку', parse_mode="HTML") #если пошло по пизде
 
 
 
@@ -152,7 +155,7 @@ async def video_handler(message: Message , command: CommandObject):
 		await msg1.delete()
 
 	except Exception as e:
-		await message.answer('⛔️Не удалось получить информацию по ссылке\n\n\nВозможные причины:\n▫️закрытый (приватный) аккаунт\n▫️установлены возрастные ограничения\n▫️ошибка в получении данных\n\n\n<tg-emoji emoji-id="5240443340498944908">✨</tg-emoji>Попробуйте отправить другую ссылку', parse_mode="HTML") #если пошло по пизде
+		await message.answer('⛔️Не удалось получить информацию по ссылке\n\n\nВозможные причины:\n▫️закрытый (приватный) аккаунт\n▫️возрастные ограничения\n▫️ошибка в получении данных\n\n\n<tg-emoji emoji-id="5240443340498944908">✨</tg-emoji>Попробуйте отправить другую ссылку', parse_mode="HTML") #если пошло по пизде
 
 
 
@@ -182,7 +185,7 @@ async def download_image_cmd(message: Message):
 		await ms.delete()
 
 	except Exception as e:
-		await message.answer('⛔️Не удалось получить информацию по ссылке\n\n\nВозможные причины:\n▫️закрытый (приватный) аккаунт\n▫️установлены возрастные ограничения\n▫️ошибка в получении данных\n\n\n<tg-emoji emoji-id="5240443340498944908">✨</tg-emoji>Попробуйте отправить другую ссылку', parse_mode="HTML") #если пошло по пизде
+		await message.answer('⛔️Не удалось получить информацию по ссылке\n\n\nВозможные причины:\n▫️закрытый (приватный) аккаунт\n▫️возрастные ограничения\n▫️ошибка в получении данных\n\n\n<tg-emoji emoji-id="5240443340498944908">✨</tg-emoji>Попробуйте отправить другую ссылку', parse_mode="HTML") #если пошло по пизде
 
 
 
