@@ -1,7 +1,7 @@
 # Download Telegram Bot
 
 ![Python Version](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-![Telegram](https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://img.shields.io/badge/Telegram-2CA5E0%3Fstyle%3Dfor-the-badge%26logo%3Dtelegram%26logoColor%3Dwhite&ved=2ahUKEwjy5c-8uJSXAxVeLxAIHdFzDGEQFnoECBAQAQ&usg=AOvVaw12WwM_KcadSgNPjQZ60EZ7)
+![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)
 
 ## Фунционал
 
