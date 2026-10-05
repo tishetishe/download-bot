@@ -171,7 +171,7 @@ async def video_handler(message: Message , command: CommandObject):
 		await message.answer("Используйте формат: /mp4 ссылка")
 		return
 
-	msg1 = await message.answer("⏳")
+	m = await message.answer("⏳")
 
 	try:
 		path = await download_video(url) #отсылаемся к нашей СИНХРОННОЙ хуйне 
@@ -180,10 +180,9 @@ async def video_handler(message: Message , command: CommandObject):
 
 		path.unlink(missing_ok=True) #удадяем файл из папки
 
-		await msg1.delete()
+		await m.delete()
 
 	except Exception as e:
-		await msg1.delete()
 		await message.answer('⛔️Не удалось получить информацию по ссылке\n\n\nВозможные причины:\n\n▫️закрытый (приватный) аккаунт\n▫️возрастные ограничения\n▫️неверный формат для скачивания\n\n\n<tg-emoji emoji-id="5240443340498944908">✨</tg-emoji>Попробуйте отправить другую ссылку', parse_mode="HTML") #если пошло по пизде
 		
 
