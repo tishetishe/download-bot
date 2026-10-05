@@ -1,5 +1,6 @@
 import asyncio
 import os
+import re
 from dotenv import load_dotenv
 
 from pathlib import Path 
@@ -13,6 +14,7 @@ import requests
 
 load_dotenv()
 
+ADMIN_ID = int(os.getenv("ADMIN_ID"))
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 bot = Bot(token=BOT_TOKEN)
@@ -33,9 +35,17 @@ async def set_command(bot: Bot):
 	await bot.set_my_commands(commands)
 
 
+def cookie_choose(url: str) -> Path:
+	def_cookie = "cookie_def"
 
+	if "tiktok" in url:
+		def_cookie = "tt_cookie"
 
+	elif "youtu.be" in url or "youtube.com" in url:
+		def_cookie = "yt_cookie"
 
+	elif "instagram" in url:
+		def_cookie = "ig_cookie"
 
 
 
@@ -55,7 +65,7 @@ def download_mp3(url: str) -> Path:
 		"format": "bestaudio/best", #правило набора потока
 		"outtmpl": "downloads/%(title)s [%(id)s].%(ext)s", #шаблон имени файла
 		"noplaylist": True, #скачивает ток 1 из плейлиста
-		"cookiesfrombrowser": ("firefox",),
+		"cookiefile": cookie_choose(url),
 		"postprocessors": [ #обработка после скачивания
 			{
 				"key": "FFmpegExtractAudio", #вызов ffmpeg
@@ -79,7 +89,7 @@ def download_mp4(url: str) -> Path:
 		"outtmpl": "downloads/%(title)s [%(id)s].%(ext)s",
 		"noplaylist": True,
 		"merge_output_format": "mp4",
-		"cookiesfrombrowser": ("firefox",),
+		"cookiefile": "tt_cookie.txt",
 	}
 
 	with YoutubeDL(opts1) as ydl:
@@ -106,7 +116,21 @@ async def download_image(url: str):
 
 @dp.message(CommandStart())
 async def start_cmd(message: Message):
-	await message.answer('Привет <tg-emoji emoji-id="5240033415935312251">✋</tg-emoji>\n\nЯ бот для скачивания аудио/видео/фото\n\nЧтобы скачать — отправь команду и ссылку.\nНапример: /mp3 ссылка (доступные команды в меню)\n\nПоддерживаемые платформы:\n\n<tg-emoji emoji-id="5359321549851598370">🌐</tg-emoji>Instagram\n<tg-emoji emoji-id="5359523920120651432">🌐</tg-emoji>Youtube\n<tg-emoji emoji-id="5359640777590841912">🌐</tg-emoji>Tiktok\n\n\nВыбери команду в меню и отправь ссылку<tg-emoji emoji-id="5470177992950946662">👇</tg-emoji>' , parse_mode="HTML")
+	await message.answer('Привет <tg-emoji emoji-id="5240033415935312251">✋</tg-emoji>\n\nЯ бот для скачивания аудио/видео/фото\n\nЧтобы скачать — отправь команду и ссылку.\nНапример: /mp3 ссылка (доступные команды в меню)\n\nПоддерживаемые платформы:\n\n<tg-emoji emoji-id="5359321549851598370">🌐</tg-emoji>Instagram\n<tg-emoji emoji-id="5359523920120651432">🌐</tg-emoji>Youtube\n<tg-emoji emoji-id="5359640777590841912">🌐</tg-emoji>Tiktok\n<tg-emoji emoji-id="5359480691274817678">🎵</tg-emoji>SoundCloud\n\n\nВыбери команду в меню и отправь ссылку<tg-emoji emoji-id="5470177992950946662">👇</tg-emoji>' , parse_mode="HTML")
+
+
+
+@dp.message(F.document , F.from_user.id == ADMIN_ID)
+async def cookie_get(message: Message):
+	doc = message.document.file_id #документ принятия ботом
+	file = await bot.get_file(doc) #ждем этот файл
+	file_path = file.file_path
+	#выбираем один из файлов для скачивания
+	if message.document.file_name in ["tt_cookie.txt", "ig_cookie.txt" , "yt_cookie.txt"]:
+		await message.answer('Ваш файл принят <tg-emoji emoji-id="5206607081334906820">✔️</tg-emoji>' , parse_mode="HTML")
+		await bot.download_file(file_path, message.document.file_name)
+	else: 
+		await message.answer('Неверный формат или ошибка <tg-emoji emoji-id="5210952531676504517">❌</tg-emoji>' , parse_mode="HTML")
 
 
 
@@ -130,7 +154,8 @@ async def audio_handler(message: Message , command: CommandObject):
 		await msg.delete()
 
 	except Exception as e:
-		await message.answer('⛔️Не удалось получить информацию по ссылке\n\n\nВозможные причины:\n▫️закрытый (приватный) аккаунт\n▫️возрастные ограничения\n▫️ошибка в получении данных\n\n\n<tg-emoji emoji-id="5240443340498944908">✨</tg-emoji>Попробуйте отправить другую ссылку', parse_mode="HTML") #если пошло по пизде
+		await msg.delete()
+		await message.answer('⛔️Не удалось получить информацию по ссылке\n\n\nВозможные причины:\n\n▫️закрытый (приватный) аккаунт\n▫️возрастные ограничения\n▫️неверный формат для скачивания\n\n\n<tg-emoji emoji-id="5240443340498944908">✨</tg-emoji>Попробуйте отправить другую ссылку', parse_mode="HTML") #если пошло по пизде
 
 
 
@@ -155,7 +180,8 @@ async def video_handler(message: Message , command: CommandObject):
 		await msg1.delete()
 
 	except Exception as e:
-		await message.answer('⛔️Не удалось получить информацию по ссылке\n\n\nВозможные причины:\n▫️закрытый (приватный) аккаунт\n▫️возрастные ограничения\n▫️ошибка в получении данных\n\n\n<tg-emoji emoji-id="5240443340498944908">✨</tg-emoji>Попробуйте отправить другую ссылку', parse_mode="HTML") #если пошло по пизде
+		await msg.delete()
+		await message.answer('⛔️Не удалось получить информацию по ссылке\n\n\nВозможные причины:\n\n▫️закрытый (приватный) аккаунт\n▫️возрастные ограничения\n▫️неверный формат для скачивания\n\n\n<tg-emoji emoji-id="5240443340498944908">✨</tg-emoji>Попробуйте отправить другую ссылку', parse_mode="HTML") #если пошло по пизде
 
 
 
@@ -175,7 +201,7 @@ async def download_image_cmd(message: Message):
 		images = await download_image(url) #обращаемся к асинхронной функции
 
 		if not images:
-			await message.answer("Не удалось получить фото")
+			await message.answer("Не удалось получить файл из-за неверного формата или ошибки")
 			await ms.delete()
 			return #останавливаем , если пошло по пизде
 
@@ -185,7 +211,14 @@ async def download_image_cmd(message: Message):
 		await ms.delete()
 
 	except Exception as e:
-		await message.answer('⛔️Не удалось получить информацию по ссылке\n\n\nВозможные причины:\n▫️закрытый (приватный) аккаунт\n▫️возрастные ограничения\n▫️ошибка в получении данных\n\n\n<tg-emoji emoji-id="5240443340498944908">✨</tg-emoji>Попробуйте отправить другую ссылку', parse_mode="HTML") #если пошло по пизде
+		await msg.delete()
+		await message.answer('⛔️Не удалось получить информацию по ссылке\n\n\nВозможные причины:\n\n▫️закрытый (приватный) аккаунт\n▫️возрастные ограничения\n▫️неверный формат для скачивания\n\n\n<tg-emoji emoji-id="5240443340498944908">✨</tg-emoji>Попробуйте отправить другую ссылку', parse_mode="HTML") #если пошло по пизде
+
+
+
+@dp.message()
+async def all_handler(message: Message):
+	await message.reply("Неизвестное сообщение\nДля команд используйте меню или команду /help")
 
 
 
