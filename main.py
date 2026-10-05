@@ -220,7 +220,7 @@ async def download_image_cmd(message: Message):
 
 @dp.message()
 async def all_handler(message: Message):
-	await message.reply("Неизвестное сообщение\nДля команд используйте меню или команду /help")
+	await message.reply("Неизвестное сообщение\nДля вывода всех команд используйте меню")
 
 
 
