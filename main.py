@@ -158,6 +158,7 @@ async def audio_handler(message: Message , command: CommandObject):
 	except Exception as e:
 		await msg.delete()
 		await message.answer('⛔️Не удалось получить информацию по ссылке\n\n\nВозможные причины:\n\n▫️закрытый (приватный) аккаунт\n▫️возрастные ограничения\n▫️неверный формат для скачивания\n\n\n<tg-emoji emoji-id="5240443340498944908">✨</tg-emoji>Попробуйте отправить другую ссылку', parse_mode="HTML") #если пошло по пизде
+		
 
 
 
@@ -182,8 +183,9 @@ async def video_handler(message: Message , command: CommandObject):
 		await msg1.delete()
 
 	except Exception as e:
-		await msg.delete()
+		await msg1.delete()
 		await message.answer('⛔️Не удалось получить информацию по ссылке\n\n\nВозможные причины:\n\n▫️закрытый (приватный) аккаунт\n▫️возрастные ограничения\n▫️неверный формат для скачивания\n\n\n<tg-emoji emoji-id="5240443340498944908">✨</tg-emoji>Попробуйте отправить другую ссылку', parse_mode="HTML") #если пошло по пизде
+		
 
 
 
@@ -213,8 +215,9 @@ async def download_image_cmd(message: Message):
 		await ms.delete()
 
 	except Exception as e:
-		await msg.delete()
+		await ms.delete()
 		await message.answer('⛔️Не удалось получить информацию по ссылке\n\n\nВозможные причины:\n\n▫️закрытый (приватный) аккаунт\n▫️возрастные ограничения\n▫️неверный формат для скачивания\n\n\n<tg-emoji emoji-id="5240443340498944908">✨</tg-emoji>Попробуйте отправить другую ссылку', parse_mode="HTML") #если пошло по пизде
+		
 
 
 
