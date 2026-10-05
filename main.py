@@ -36,16 +36,16 @@ async def set_command(bot: Bot):
 
 
 def cookie_choose(url: str) -> Path:
-	def_cookie = "cookie_def"
+	def_cookie = "cookie_def.txt"
 
 	if "tiktok" in url:
-		def_cookie = "tt_cookie"
+		def_cookie = "tt_cookie.txt"
 
 	elif "youtu.be" in url or "youtube.com" in url:
-		def_cookie = "yt_cookie"
+		def_cookie = "yt_cookie.txt"
 
 	elif "instagram" in url:
-		def_cookie = "ig_cookie"
+		def_cookie = "ig_cookie.txt"
 
 
 
@@ -90,8 +90,8 @@ def download_mp4(url: str) -> Path:
 		"outtmpl": "downloads/%(title)s [%(id)s].%(ext)s",
 		"noplaylist": True,
 		"socket_timeout": 60, #тайм-аут
-		"merge_output_format": cookie_choose(url),
-		"cookiefile": "tt_cookie.txt",
+		"merge_output_format": "mp4",
+		"cookiefile": cookie_choose(url),
 	}
 
 	with YoutubeDL(opts1) as ydl:
