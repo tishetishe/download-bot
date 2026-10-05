@@ -65,6 +65,7 @@ def download_mp3(url: str) -> Path:
 		"format": "bestaudio/best", #правило набора потока
 		"outtmpl": "downloads/%(title)s [%(id)s].%(ext)s", #шаблон имени файла
 		"noplaylist": True, #скачивает ток 1 из плейлиста
+		"socket_timeout": 60, #тайм-аут
 		"cookiefile": cookie_choose(url),
 		"postprocessors": [ #обработка после скачивания
 			{
@@ -88,7 +89,8 @@ def download_mp4(url: str) -> Path:
 		"format": "bestvideo+bestaudio/best",
 		"outtmpl": "downloads/%(title)s [%(id)s].%(ext)s",
 		"noplaylist": True,
-		"merge_output_format": "mp4",
+		"socket_timeout": 60, #тайм-аут
+		"merge_output_format": cookie_choose(url),
 		"cookiefile": "tt_cookie.txt",
 	}
 
