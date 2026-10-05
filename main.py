@@ -66,7 +66,7 @@ def download_mp3(url: str) -> Path:
 		"outtmpl": "downloads/%(title)s [%(id)s].%(ext)s", #шаблон имени файла
 		"noplaylist": True, #скачивает ток 1 из плейлиста
 		"socket_timeout": 60, #тайм-аут
-		"cookiefile": cookie_choose(url),
+		"cookiefile": "yt_cookie.txt",
 		"postprocessors": [ #обработка после скачивания
 			{
 				"key": "FFmpegExtractAudio", #вызов ffmpeg
