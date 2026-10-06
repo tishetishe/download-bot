@@ -36,16 +36,16 @@ async def set_command(bot: Bot):
 
 
 def cookie_choose(url: str) -> Path:
-	def_cookie = "cookie_def.txt"
+	def_cookie = "cookie_def"
 
 	if "tiktok" in url:
-		def_cookie = "tt_cookie.txt"
+		def_cookie = "tt_cookie"
 
 	elif "youtu.be" in url or "youtube.com" in url:
-		def_cookie = "yt_cookie.txt"
+		def_cookie = "yt_cookie"
 
 	elif "instagram" in url:
-		def_cookie = "ig_cookie.txt"
+		def_cookie = "ig_cookie"
 
 
 
@@ -67,7 +67,6 @@ def download_mp3(url: str) -> Path:
 		"noplaylist": True, #скачивает ток 1 из плейлиста
 		"socket_timeout": 60, #тайм-аут
 		"cookiefile": cookie_choose(url),
-		"js_runtimes": ["node:/usr/bin/node"], #что бы ютуб блять не упал
 		"postprocessors": [ #обработка после скачивания
 			{
 				"key": "FFmpegExtractAudio", #вызов ffmpeg
