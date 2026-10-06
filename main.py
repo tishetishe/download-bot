@@ -66,8 +66,8 @@ def download_mp3(url: str) -> Path:
 		"outtmpl": "downloads/%(title)s [%(id)s].%(ext)s", #шаблон имени файла
 		"noplaylist": True, #скачивает ток 1 из плейлиста
 		"socket_timeout": 60, #тайм-аут
-		"cookiefile": "yt_cookie.txt",
-		"js_runtimes": ["deno:/root/.deno/bin/deno"], #что бы ютуб блять не упал
+		"cookiefile": cookie_choose(url),
+		"js_runtimes": ["node:/usr/bin/node"], #что бы ютуб блять не упал
 		"postprocessors": [ #обработка после скачивания
 			{
 				"key": "FFmpegExtractAudio", #вызов ffmpeg
